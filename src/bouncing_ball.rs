@@ -42,6 +42,13 @@ impl BouncingBall {
         }
     }
 
+    pub fn new_at(x: f32, y: f32) -> Self {
+        let mut ball = Self::new();
+        ball.x = x;
+        ball.y = y;
+        ball
+    }
+
     pub fn update(&mut self, ctx: &mut Context) {
         let screen = graphics::screen_coordinates(ctx);
 

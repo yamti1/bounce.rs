@@ -24,7 +24,7 @@ impl State {
     }
 }
 
-impl ggez::event::EventHandler for State {
+impl event::EventHandler for State {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         for ball in self.balls.iter_mut() {
             ball.update(ctx);
@@ -34,14 +34,21 @@ impl ggez::event::EventHandler for State {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, graphics::BLACK);
-
         for ball in self.balls.iter() {
             ball.draw(ctx)?;
         }
-
         graphics::present(ctx)?;
-
         Ok(())
+    }
+
+    fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: event::MouseButton, x: f32, y: f32) {
+        match button {
+            event::MouseButton::Left => {
+                let ball = BouncingBall::new_at(x, y);
+                self.balls.push(ball);
+            },
+            _ => {}
+        }
     }
 }
 
