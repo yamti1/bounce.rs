@@ -11,6 +11,11 @@ const FATNESS_RANGE: Range = (0.1, 1.0);
 const MAX_SPEED: f32 = 10.0;
 const DIRECTIONS: [i8; 2] = [-1, 1];
 
+enum BounceDirection {
+    LeftRight,
+    UpDown,
+}
+
 pub struct BouncingBall {
     radius: f32,
     speed_factor: f32,
@@ -50,14 +55,8 @@ impl BouncingBall {
     }
 
     pub fn update(&mut self, ctx: &mut Context) {
-        let screen = graphics::screen_coordinates(ctx);
-
-        if self.x + self.radius >= screen.w || self.x - self.radius <= 0.0 {
-            self.dx *= -1;
-        }
-        if self.y + self.radius >= screen.h || self.y - self.radius <= 0.0 {
-            self.dy *= -1;
-        }
+        if self.is_bouncing(ctx, BounceDirection::LeftRight) { self.dx *= -1; }
+        if self.is_bouncing(ctx, BounceDirection::UpDown)    { self.dy *= -1; }
         
         self.x += self.speed_factor * MAX_SPEED * self.dx as f32;
         self.y += self.speed_factor * MAX_SPEED * self.dy as f32;
@@ -76,4 +75,25 @@ impl BouncingBall {
 
         Ok(())
     }
+
+    fn is_bouncing(&self, ctx: &Context, direction: BounceDirection) -> bool {
+        let screen = graphics::screen_coordinates(ctx);
+        let tolerance = 5.0;
+
+        match direction {
+            BounceDirection::LeftRight => {
+                self.dx == -1 && equal_with_tolerance(self.x - self.radius, 0.0, tolerance) ||
+                self.dx ==  1 && equal_with_tolerance(self.x + self.radius, screen.w, tolerance)
+            },
+            BounceDirection::UpDown => {
+                self.dy == -1 && equal_with_tolerance(self.y - self.radius, 0.0, tolerance) ||
+                self.dy ==  1 && equal_with_tolerance(self.y + self.radius, screen.h, tolerance)
+            }
+        }
+    }
+}
+
+fn equal_with_tolerance(a: f32, b: f32, tolerance: f32) -> bool {
+    a <= b + tolerance &&
+    a >= b - tolerance
 }
