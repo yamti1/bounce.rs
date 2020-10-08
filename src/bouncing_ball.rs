@@ -47,11 +47,27 @@ impl BouncingBall {
         }
     }
 
-    pub fn new_at(x: f32, y: f32) -> Self {
+    pub fn new_at(x: f32, y: f32, screen_width: f32, screen_height: f32) -> Self {
         let mut ball = Self::new();
         ball.x = x;
         ball.y = y;
+        ball.direct_away_from_edge(screen_width, screen_height);
+        
         ball
+    }
+
+    fn direct_away_from_edge(&mut self, screen_width: f32, screen_height: f32) {
+        if self.x + self.radius > screen_width { 
+            self.dx = -1; 
+        } else if self.x - self.radius < 0.0 {
+             self.dx = 1;
+        }
+
+        if self.y + self.radius > screen_height { 
+            self.dy = -1; 
+        } else if self.y - self.radius < 0.0 {
+             self.dy = 1;
+        }
     }
 
     pub fn update(&mut self, ctx: &mut Context) {

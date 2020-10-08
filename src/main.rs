@@ -41,10 +41,11 @@ impl event::EventHandler for State {
         Ok(())
     }
 
-    fn mouse_button_down_event(&mut self, _ctx: &mut Context, button: event::MouseButton, x: f32, y: f32) {
+    fn mouse_button_down_event(&mut self, ctx: &mut Context, button: event::MouseButton, x: f32, y: f32) {
         match button {
             event::MouseButton::Left => {
-                let ball = BouncingBall::new_at(x, y);
+                let screen = graphics::screen_coordinates(ctx);
+                let ball = BouncingBall::new_at(x, y, screen.w, screen.h);
                 self.balls.push(ball);
             },
             _ => {}
