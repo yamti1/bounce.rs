@@ -27,7 +27,7 @@ impl State {
 impl ggez::event::EventHandler for State {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         for ball in self.balls.iter_mut() {
-            ball.update(ctx)?;
+            ball.update(ctx);
         }
         Ok(())
     }

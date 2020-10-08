@@ -42,7 +42,7 @@ impl BouncingBall {
         }
     }
 
-    pub fn update(&mut self, ctx: &mut Context) -> GameResult {
+    pub fn update(&mut self, ctx: &mut Context) {
         let screen = graphics::screen_coordinates(ctx);
 
         if self.x + self.radius >= screen.w || self.x - self.radius <= 0.0 {
@@ -54,8 +54,6 @@ impl BouncingBall {
         
         self.x += self.speed_factor * MAX_SPEED * self.dx as f32;
         self.y += self.speed_factor * MAX_SPEED * self.dy as f32;
-
-        Ok(())
     }
 
     pub fn draw(&self, ctx: &mut Context) -> GameResult {
