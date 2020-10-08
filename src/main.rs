@@ -6,6 +6,7 @@ use bouncing_ball::BouncingBall;
 const BALL_COUNT: usize = 10;
 const WINDOW_WIDTH: f32 = 640.0;
 const WINDOW_HEIGHT: f32 = 480.0;
+const LOG_FPS: bool = true;
 
 struct State {
     balls: Vec<BouncingBall>,
@@ -38,6 +39,8 @@ impl event::EventHandler for State {
             ball.draw(ctx)?;
         }
         graphics::present(ctx)?;
+
+        if LOG_FPS && timer::ticks(ctx) % 50 == 0 { println!("{0:.0} fps", timer::fps(ctx)); }
         Ok(())
     }
 
