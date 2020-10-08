@@ -98,7 +98,10 @@ impl BouncingBall {
 
     fn is_bouncing(&self, ctx: &Context, direction: BounceDirection) -> bool {
         let screen = graphics::screen_coordinates(ctx);
-        let tolerance = 5.0;
+
+        // The tolerance is the step taken every frame divided by two because `equal_with_tolerance`
+        // checks if the ball is at the edge +/- the tolerance.
+        let tolerance = MAX_SPEED * self.speed_factor / 2.0;
 
         match direction {
             BounceDirection::LeftRight => {
