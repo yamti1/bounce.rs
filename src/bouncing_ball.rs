@@ -31,7 +31,8 @@ impl BouncingBall {
         let mut rng = rand::thread_rng();
         let fatness_distribution = rand::distributions::Uniform::new_inclusive(FATNESS_RANGE.0, FATNESS_RANGE.1);
         let fatness = rng.sample(fatness_distribution);
-        Self {
+
+        let mut ball = Self {
             radius: fatness * RADIUS_RANGE.1 + RADIUS_RANGE.0,
             speed_factor: 1.0 - fatness,
             color: graphics::Color::new(
@@ -40,11 +41,14 @@ impl BouncingBall {
                 rng.gen::<f32>(), 
                 1.0 - fatness
             ),
-            x: WINDOW_WIDTH / 2.0,
-            y: WINDOW_HEIGHT / 2.0,
+            x: rng.gen_range(0.0, WINDOW_WIDTH),
+            y: rng.gen_range(0.0, WINDOW_HEIGHT),
             dx: DIRECTIONS.choose(&mut rng).unwrap().clone(),
             dy: DIRECTIONS.choose(&mut rng).unwrap().clone(),
-        }
+        };
+        ball.direct_away_from_edge(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        ball
     }
 
     pub fn new_at(x: f32, y: f32, screen_width: f32, screen_height: f32) -> Self {
