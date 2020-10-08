@@ -1,12 +1,9 @@
 mod bouncing_ball;
+mod conf;
 
 use ggez::*;
+use conf::*;
 use bouncing_ball::BouncingBall;
-
-const BALL_COUNT: usize = 10;
-const WINDOW_WIDTH: f32 = 640.0;
-const WINDOW_HEIGHT: f32 = 480.0;
-const LOG_FPS: bool = true;
 
 struct State {
     balls: Vec<BouncingBall>,
@@ -60,7 +57,7 @@ impl event::EventHandler for State {
 fn main() -> GameResult {
     let state = &mut State::new();
 
-    let mut c = conf::Conf::new();
+    let mut c = ggez::conf::Conf::new();
     c.window_mode.width = WINDOW_WIDTH;
     c.window_mode.height = WINDOW_HEIGHT;
     c.window_setup.title = String::from("Bouncing Balls");

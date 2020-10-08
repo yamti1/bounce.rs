@@ -2,14 +2,8 @@ use rand::prelude::*;
 use ggez::{Context, GameResult, graphics};
 use ggez::nalgebra as na;
 
-use super::{WINDOW_WIDTH, WINDOW_HEIGHT};
-
-type Range = (f32, f32);
-
-const RADIUS_RANGE: Range = (5.0, 200.0);
-const FATNESS_RANGE: Range = (0.1, 1.0);
-const MAX_SPEED: f32 = 10.0;
-const DIRECTIONS: [i8; 2] = [-1, 1];
+use crate::conf::{WINDOW_WIDTH, WINDOW_HEIGHT};
+use crate::ball::*;
 
 enum BounceDirection {
     LeftRight,
@@ -43,8 +37,8 @@ impl BouncingBall {
             ),
             x: rng.gen_range(0.0, WINDOW_WIDTH),
             y: rng.gen_range(0.0, WINDOW_HEIGHT),
-            dx: DIRECTIONS.choose(&mut rng).unwrap().clone(),
-            dy: DIRECTIONS.choose(&mut rng).unwrap().clone(),
+            dx: [-1, 1].choose(&mut rng).unwrap().clone(),
+            dy: [-1, 1].choose(&mut rng).unwrap().clone(),
         };
         ball.direct_away_from_edge(WINDOW_WIDTH, WINDOW_HEIGHT);
 
