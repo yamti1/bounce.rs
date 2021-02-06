@@ -1,4 +1,4 @@
-# Bouncers
+# Bounce.rs
 Bouncing balls game written in Rust with the ggez library.
 
 ## Build & Run
